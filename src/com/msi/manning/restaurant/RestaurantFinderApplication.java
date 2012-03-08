@@ -3,6 +3,7 @@ package com.msi.manning.restaurant;
 import android.app.Application;
 
 import com.msi.manning.restaurant.data.Review;
+import java.util.*;
 
 /**
  * Extend Application for global state information for an application. Access the application via
@@ -22,9 +23,29 @@ public class RestaurantFinderApplication extends Application {
     private Review currentReview;
     private String reviewCriteriaCuisine;
     private String reviewCriteriaLocation;
+    
+    // See the appendix section in the Project 7 description for more detailed information on this class
+    public class RecentHistory <K,V> extends LinkedHashMap<K,V> {
+    	  // accessOrder = true:  LRU
+    	  // accessOrder = false: FIFO
+    	  public RecentHistory (int initialCapacity, float loadFactor, boolean accessOrder){
+    	    super(initialCapacity, loadFactor, accessOrder);
+    	  }
+
+    	  // Remove either the LRU-based or the FIFO-based entry from TLB if TLB_SIZE has been exceeded
+    	  protected boolean removeEldestEntry(Map.Entry<K,V> eldest){
+    	      if (this.size() > Constants.HISTORY_SIZE)
+    	        return true;
+    	      else
+    	        return false;
+    	  }
+    }
+    
+    private static RecentHistory<Integer, String> recentHistory;
 
     public RestaurantFinderApplication() {
         super();
+        recentHistory = new RecentHistory<Integer, String>(Constants.HISTORY_SIZE,1,true);
     }
 
     @Override
@@ -48,6 +69,10 @@ public class RestaurantFinderApplication extends Application {
     public String getReviewCriteriaLocation() {
         return this.reviewCriteriaLocation;
     }
+    
+    public RecentHistory<Integer, String> getRecentHistory() {
+        return this.recentHistory;
+    }
 
     public void setCurrentReview(Review currentReview) {
         this.currentReview = currentReview;
@@ -59,5 +84,9 @@ public class RestaurantFinderApplication extends Application {
 
     public void setReviewCriteriaLocation(String reviewCriteriaLocation) {
         this.reviewCriteriaLocation = reviewCriteriaLocation;
+    }
+    
+    public void setRecentHistory(RecentHistory<Integer, String> rH) {
+    	this.recentHistory = rH;
     }
 }

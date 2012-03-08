@@ -9,4 +9,6 @@ public class Constants {
     public static final String PREFS = "RCP";
 
     public static final String STARTFROM_EXTRA = "com.msi.manning.restaurant.StartFrom";
+
+    public static final int HISTORY_SIZE = 5;
 }
