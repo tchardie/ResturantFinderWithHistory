@@ -27,7 +27,8 @@ public class ReviewCriteria extends Activity {
     private static final int MENU_GET_REVIEWS = Menu.FIRST;
     private Spinner cuisine;
     private Button grabReviews;
-    private EditText location;    
+    private EditText location;  
+    private Button grabHistroy;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,9 @@ public class ReviewCriteria extends Activity {
         this.location = (EditText) findViewById(R.id.location);
         this.cuisine = (Spinner) findViewById(R.id.cuisine);
         this.grabReviews = (Button) findViewById(R.id.get_reviews_button);
-
+        //this.grabHistroy = (Button) findViewById();
+        
+        
         ArrayAdapter<String> cuisines = new ArrayAdapter<String>(this, R.layout.spinner_view, getResources()
             .getStringArray(R.array.cuisines));
         cuisines.setDropDownViewResource(R.layout.spinner_view_dropdown);
