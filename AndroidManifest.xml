@@ -43,7 +43,7 @@
 				<category
 					android:name="android.intent.category.DEFAULT" />
 				<action
-					android:name="com.msi.manning.restaurant.VIEW_DETAIL" />
+					android:name="com.msi.manning.restaurant.VIEW_HISTORY" />
 			</intent-filter>
 		</activity>
 

@@ -11,4 +11,5 @@ public class Constants {
     public static final String STARTFROM_EXTRA = "com.msi.manning.restaurant.StartFrom";
 
     public static final int HISTORY_SIZE = 5;
+    public static final String INTENT_ACTION_VIEW_HISTORY = "com.msi.manning.resturant.VIEW_HISTORY";
 }

@@ -14,69 +14,71 @@ import com.msi.manning.restaurant.data.Review;
 import java.util.List;
 
 /**
- * Custom adapter for "Review" model objects.
+ * Custom adapter for "History" model objects.
  * 
  * @author charliecollins
  */
 public class HistoryAdapter extends BaseAdapter {
 
-    private static final String CLASSTAG = HistoryAdapter.class.getSimpleName();
-    private final Context context;
-    private final List<Review> reviews;
+	private static final String CLASSTAG = HistoryAdapter.class.getSimpleName();
+	private final Context context;
+	private final List<Review> reviews;
 
-    public HistoryAdapter(Context context, List<Review> reviews) {
-        this.context = context;
-        this.reviews = reviews;
-        Log.v(Constants.LOGTAG, " " + HistoryAdapter.CLASSTAG + " reviews size - " + this.reviews.size());
-    }
+	public HistoryAdapter(Context context, List<Review> reviews) {
+		this.context = context;
+		this.reviews = reviews;
+		Log.v(Constants.LOGTAG, " " + HistoryAdapter.CLASSTAG
+				+ " reviews size - " + this.reviews.size());
+	}
 
-    public int getCount() {
-        return this.reviews.size();
-    }
+	public int getCount() {
+		return this.reviews.size();
+	}
 
-    public Object getItem(int position) {
-        return this.reviews.get(position);
-    }
+	public Object getItem(int position) {
+		return this.reviews.get(position);
+	}
 
-    public long getItemId(int position) {
-        return position;
-    }
+	public long getItemId(int position) {
+		return position;
+	}
 
-    public View getView(int position, View convertView, ViewGroup parent) {
-        Review review = this.reviews.get(position);
-        return new ReviewListView(this.context, review.name, review.rating);
-    }
+	public View getView(int position, View convertView, ViewGroup parent) {
+		Review review = this.reviews.get(position);
+		return new HistoryListView(this.context, review.name, review.rating);
+	}
 
-    /**
-     * ReviewListView that adapter returns as it's view item per row.
-     * 
-     * @author charliecollins
-     */
-    private final class ReviewListView extends LinearLayout {
+	/**
+	 * ReviewListView that adapter returns as it's view item per row.
+	 * 
+	 * @author charliecollins
+	 */
+	private final class HistoryListView extends LinearLayout {
 
-        private TextView name;
-        private TextView rating;
+		private TextView name;
+		private TextView rating;
 
-        public ReviewListView(Context context, String name, String rating) {
+		public HistoryListView(Context context, String name, String rating) {
 
-            super(context);
-            setOrientation(LinearLayout.VERTICAL);
+			super(context);
+			setOrientation(LinearLayout.VERTICAL);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.setMargins(5, 3, 5, 0);
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+					ViewGroup.LayoutParams.WRAP_CONTENT,
+					ViewGroup.LayoutParams.WRAP_CONTENT);
+			params.setMargins(5, 3, 5, 0);
 
-            this.name = new TextView(context);
-            this.name.setText(name);
-            this.name.setTextSize(16f);
-            this.name.setTextColor(Color.WHITE);
-            this.addView(this.name, params);
+			this.name = new TextView(context);
+			this.name.setText(name);
+			this.name.setTextSize(16f);
+			this.name.setTextColor(Color.WHITE);
+			this.addView(this.name, params);
 
-            this.rating = new TextView(context);
-            this.rating.setText(rating);
-            this.rating.setTextSize(16f);
-            this.rating.setTextColor(Color.GRAY);
-            this.addView(this.rating, params);
-        }
-    }
+			this.rating = new TextView(context);
+			this.rating.setText(rating);
+			this.rating.setTextSize(16f);
+			this.rating.setTextColor(Color.GRAY);
+			this.addView(this.rating, params);
+		}
+	}
 }
