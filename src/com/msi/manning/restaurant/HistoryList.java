@@ -81,8 +81,15 @@ public class HistoryList extends ListActivity {
 	}
 
 	protected void onListItemClick(ListView l, View v, int position, long id) {
+		RestaurantFinderApplication application = (RestaurantFinderApplication) getApplication();
+		String s = history.get(position);
 		
+		RestaurantFinderApplication.RecentHistory<Integer, String> recentHistory = application
+				.getRecentHistory();
+		recentHistory.put(s.hashCode(), s);
 		
+		historyAdapter = new HistoryAdapter(HistoryList.this, history);
+		setListAdapter(historyAdapter);
 		Intent intent = new Intent(Constants.INTENT_ACTION_VIEW_LIST);
 		startActivity(intent);
 	}
