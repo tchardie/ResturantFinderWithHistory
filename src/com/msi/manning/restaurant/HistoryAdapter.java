@@ -75,7 +75,7 @@ public class HistoryAdapter extends BaseAdapter {
 			this.history = new TextView(context);
 			this.history.setText(history);
 			this.history.setTextSize(20f);
-			this.history.setTextColor(Color.RED);
+			this.history.setTextColor(Color.rgb(255, 140, 0));
 			this.addView(this.history, params);
 			
 		}
