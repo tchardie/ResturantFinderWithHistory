@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,8 +36,7 @@ public class HistoryList extends ListActivity {
 	private TextView empty;
 	private ProgressDialog progressDialog;
 	private HistoryAdapter historyAdapter;
-	private List<Review> reviews;
-	
+
 	private List<String> history;
 	private final Handler handler = new Handler() {
 		@Override
@@ -44,11 +44,8 @@ public class HistoryList extends ListActivity {
 			Log.v(Constants.LOGTAG, " " + HistoryList.CLASSTAG
 					+ " worker thread done, setup ReviewAdapter");
 			progressDialog.dismiss();
-			if ((reviews == null) || (reviews.size() == 0)) {
+			if ((history == null) || (history.size() == 0)) {
 				empty.setText("No Data");
-			} else {
-				historyAdapter = new HistoryAdapter(HistoryList.this, reviews);
-				setListAdapter(historyAdapter);
 			}
 		}
 	};
@@ -66,7 +63,7 @@ public class HistoryList extends ListActivity {
 		this.empty = (TextView) findViewById(R.id.empty);
 
 		// set list properties
-		final ListView listView = getListView();
+		ListView listView = getListView();
 		listView.setItemsCanFocus(false);
 		listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		listView.setEmptyView(this.empty);
@@ -77,71 +74,22 @@ public class HistoryList extends ListActivity {
 	protected void onResume() {
 		super.onResume();
 		Log.v(Constants.LOGTAG, " " + HistoryList.CLASSTAG + " onResume");
-		// get the current review criteria from the Application (global state
-		// placed there)
-		/**
-		 * RestaurantFinderApplication application =
-		 * (RestaurantFinderApplication) getApplication(); String
-		 * criteriaCuisine = application.getReviewCriteriaCuisine(); String
-		 * criteriaLocation = application.getReviewCriteriaLocation();
-		 * 
-		 * // get start from, an int, from extras int startFrom =
-		 * getIntent().getIntExtra(Constants.STARTFROM_EXTRA, 1);
-		 **/
+
 		loadHistory();
 
-		 Toast.makeText(this, "After Load", 20000).show();
+		// Toast.makeText(this, "After Load", 20000).show();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		menu.add(0, HistoryList.MENU_GET_NEXT_PAGE, 0,
-				R.string.menu_get_next_page).setIcon(
-				android.R.drawable.ic_menu_more);
-		menu.add(0, HistoryList.MENU_CHANGE_CRITERIA, 0,
-				R.string.menu_change_criteria).setIcon(
-				android.R.drawable.ic_menu_edit);
-		return true;
-	}
-
-	@Override
-	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		Intent intent = null;
-		switch (item.getItemId()) {
-		case MENU_GET_NEXT_PAGE:
-			// increment the startFrom value and call this Activity again
-			intent = new Intent(Constants.INTENT_ACTION_VIEW_LIST);
-			intent.putExtra(Constants.STARTFROM_EXTRA,
-					getIntent().getIntExtra(Constants.STARTFROM_EXTRA, 1)
-							+ HistoryList.NUM_RESULTS_PER_PAGE);
-			startActivity(intent);
-			return true;
-		case MENU_CHANGE_CRITERIA:
-			intent = new Intent(this, ReviewCriteria.class);
-			startActivity(intent);
-			return true;
-		}
-		return super.onMenuItemSelected(featureId, item);
-	}
-
-	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		// set the current review to the Application (global state placed there)
-		RestaurantFinderApplication application = (RestaurantFinderApplication) getApplication();
-		application.setCurrentReview(this.reviews.get(position));
-
-		// startFrom page is not stored in application, for example purposes
-		// it's a simple "extra"
-		Intent intent = new Intent(Constants.INTENT_ACTION_VIEW_DETAIL);
-		intent.putExtra(Constants.STARTFROM_EXTRA,
-				getIntent().getIntExtra(Constants.STARTFROM_EXTRA, 1));
+		
+		
+		Intent intent = new Intent(Constants.INTENT_ACTION_VIEW_LIST);
 		startActivity(intent);
 	}
 
 	private void loadHistory() {
 
-		Log.v(Constants.LOGTAG, " " + HistoryList.CLASSTAG + " loadReviews");
+		Log.v(Constants.LOGTAG, " " + HistoryList.CLASSTAG + " loadHistory");
 		RestaurantFinderApplication application = (RestaurantFinderApplication) getApplication();
 		RestaurantFinderApplication.RecentHistory<Integer, String> recentHistory = application
 				.getRecentHistory();
@@ -151,6 +99,15 @@ public class HistoryList extends ListActivity {
 		while (i.hasNext()) {
 			history.add(0, i.next());
 		}
-
+		if ((history == null) || (history.size() == 0)) {
+			empty.setText("No Data");
+		} else {
+			historyAdapter = new HistoryAdapter(HistoryList.this, history);
+			setListAdapter(historyAdapter);
+			// setListAdapter(new ArrayAdapter<String>(this,
+			// R.layout.history_list, history));
+		}
+		// Toast.makeText(this, recentHistory.values().toString(),
+		// 20000).show();
 	}
 }

@@ -119,6 +119,12 @@ public class ReviewCriteria extends Activity {
 	}
 
 	private void handleGetHistory() {
+		RestaurantFinderApplication application = (RestaurantFinderApplication) getApplication();
+		application.setReviewCriteriaCuisine(this.cuisine.getSelectedItem()
+				.toString());
+		application.setReviewCriteriaLocation(this.location.getText()
+				.toString());
+		
 		Intent i = new Intent(this, HistoryList.class);
 		startActivity(i);
 	}

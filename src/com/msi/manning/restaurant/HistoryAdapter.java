@@ -8,10 +8,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.msi.manning.restaurant.data.Review;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Custom adapter for "History" model objects.
@@ -22,30 +23,34 @@ public class HistoryAdapter extends BaseAdapter {
 
 	private static final String CLASSTAG = HistoryAdapter.class.getSimpleName();
 	private final Context context;
-	private final List<Review> reviews;
+	private final List<String> history;
 
-	public HistoryAdapter(Context context, List<Review> reviews) {
+	public HistoryAdapter(Context context, List<String> history) {
 		this.context = context;
-		this.reviews = reviews;
+		this.history = history;
 		Log.v(Constants.LOGTAG, " " + HistoryAdapter.CLASSTAG
-				+ " reviews size - " + this.reviews.size());
+				+ " reviews size - " + this.history.size());
 	}
 
+	@Override
 	public int getCount() {
-		return this.reviews.size();
+		return this.history.size();
 	}
 
+	@Override
 	public Object getItem(int position) {
-		return this.reviews.get(position);
+		return this.history.get(position);
 	}
 
+	@Override
 	public long getItemId(int position) {
 		return position;
 	}
 
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Review review = this.reviews.get(position);
-		return new HistoryListView(this.context, review.name, review.rating);
+		String history = this.history.get(position);
+		return new HistoryListView(this.context, history);
 	}
 
 	/**
@@ -55,30 +60,25 @@ public class HistoryAdapter extends BaseAdapter {
 	 */
 	private final class HistoryListView extends LinearLayout {
 
-		private TextView name;
-		private TextView rating;
+		private TextView history;
 
-		public HistoryListView(Context context, String name, String rating) {
-
+		public HistoryListView(Context context, String history) {
 			super(context);
+			
 			setOrientation(LinearLayout.VERTICAL);
-
+			
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 					ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
 			params.setMargins(5, 3, 5, 0);
-
-			this.name = new TextView(context);
-			this.name.setText(name);
-			this.name.setTextSize(16f);
-			this.name.setTextColor(Color.WHITE);
-			this.addView(this.name, params);
-
-			this.rating = new TextView(context);
-			this.rating.setText(rating);
-			this.rating.setTextSize(16f);
-			this.rating.setTextColor(Color.GRAY);
-			this.addView(this.rating, params);
+			//Toast.makeText(this, , 20000).show();
+			this.history = new TextView(context);
+			this.history.setText(history);
+			this.history.setTextSize(20f);
+			this.history.setTextColor(Color.RED);
+			this.addView(this.history, params);
+			
 		}
 	}
+
 }
